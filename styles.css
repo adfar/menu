@@ -26,3 +26,7 @@ button {
 .price {
     margin: 18px;
 }
+
+.out {
+    color: grey;
+}
