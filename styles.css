@@ -1,0 +1,28 @@
+body {
+    font-family: sans-serif;
+}
+
+h1 {
+    font-size: 48px;
+    font-weight: normal;
+    padding-left: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 10px;
+}
+
+li {
+    font-size: 40px;
+}
+
+button {
+    font-size: 24px;
+    vertical-align: text-top;
+
+}
+
+.price {
+    margin: 18px;
+}
