@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { pusherServer } from '@/app/lib/pusher';
+
 const prisma = new PrismaClient();
 
 export async function DELETE(_req, ctx) {
@@ -11,6 +13,7 @@ export async function DELETE(_req, ctx) {
   try {
     const deleted = await prisma.menuItem.delete({ where: { id: itemId } });
     // 204 is a nice REST-y response for deletes
+    await pusherServer.trigger('menu-channel', 'menu-updated', { action: 'delete', id });
     return new Response(null, { status: 204 });
   } catch (err) {
     // If the record doesn't exist
@@ -26,6 +29,7 @@ export async function PUT(req, ctx) {
   const data = await req.json();
   // Optionally validate fields here
   const updated = await prisma.menuItem.update({ where: { id: itemId }, data });
+  await pusherServer.trigger('menu-channel', 'menu-updated', { action: 'update', id });
   return Response.json(updated);
 }
 

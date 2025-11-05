@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Pusher from 'pusher-js';
 
 export default function MenuPage() {
   const [items, setItems] = useState([]);
@@ -13,6 +14,19 @@ export default function MenuPage() {
 
   useEffect(() => {
     load();
+
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER
+    });
+    
+    const channel = pusher.subscribe('menu-channel');
+    channel.bind('menu-updated', () => {
+      load();
+    });
+
+    return () => {
+      pusher.unsubscribe('menu-channel');
+    };
   }, []);
 
   return (
